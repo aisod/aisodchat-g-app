@@ -32,7 +32,9 @@
         - name: Install Android SDK Platform 37
           run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37.0"
         - name: Build
-          run: ./gradlew assembleRelease
+          run: |
+            chmod +x gradlew
+            ./gradlew assembleRelease
         - name: Rename APK
           run: cp app/build/outputs/apk/release/*.apk "$GITHUB_WORKSPACE/AISODChat-build-${{ github.run_number }}.apk"
         - name: Upload APK artifact
