@@ -1,8 +1,8 @@
-# Model Context Protocol (MCP) in Google AI Edge Gallery
+# Model Context Protocol (MCP) in AISOD Chat
 
 ## Overview
 
-Google AI Edge Gallery leverages on-device machine learning models to deliver low-latency, privacy-preserving inference. However, standalone on-device models inherently lack access to real-time data, web services, and dynamic action execution. To solve this limitation, Google AI Edge Gallery integrates the [**Model Context Protocol (MCP)**](https://modelcontextprotocol.io/docs/getting-started/intro), an open standard establishing secure, universal communication between AI models and external systems. By adopting this standardized client-server architecture, the app decouples its on-device models (the client) from external tools and data sources (the servers), creating a single unified interface for dynamic context retrieval and tool execution. 
+AISOD Chat leverages on-device machine learning models to deliver low-latency, privacy-preserving inference. However, standalone on-device models inherently lack access to real-time data, web services, and dynamic action execution. To solve this limitation, AISOD Chat integrates the [**Model Context Protocol (MCP)**](https://modelcontextprotocol.io/docs/getting-started/intro), an open standard establishing secure, universal communication between AI models and external systems. By adopting this standardized client-server architecture, the app decouples its on-device models (the client) from external tools and data sources (the servers), creating a single unified interface for dynamic context retrieval and tool execution. 
 
 * **Dynamic Tool Discovery:** The app connects to configured MCP servers, dynamically loading and parsing JSON schemas for available tools.
 * **Contextual Injection:** Discovered tool descriptions and schemas are directly injected into the on-device model's prompt context.
@@ -13,13 +13,13 @@ Google AI Edge Gallery leverages on-device machine learning models to deliver lo
 
 ## Add a Local MCP Server
 
-In this section, we will walk through adding one of the official example MCP servers, [`fetch`](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch), to Google AI Edge Gallery.
+In this section, we will walk through adding one of the official example MCP servers, [`fetch`](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch), to AISOD Chat.
 
 ### Step 1: Start the Server in StreamableHTTP Mode
 
-Most open-source MCP servers are built exclusively with the **stdio** transport (learn more about [MCP transport types](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)), under the assumption that the MCP server and the LLM client (e.g., Gemini CLI, Claude Code, etc) run on the same local machine. However, this does not work natively for a mobile application like Google AI Edge Gallery.
+Most open-source MCP servers are built exclusively with the **stdio** transport (learn more about [MCP transport types](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)), under the assumption that the MCP server and the LLM client (e.g., Gemini CLI, Claude Code, etc) run on the same local machine. However, this does not work natively for a mobile application like AISOD Chat.
 
-To make the server accessible to Google AI Edge Gallery over the network, it needs to run in **StreamableHTTP** mode. Since the `fetch` example only supports `stdio` out of the box, we can use an adapter tool called [`supergateway`](https://github.com/supercorp-ai/supergateway) to convert the `stdio` transport to `StreamableHTTP` without rewriting the server code.
+To make the server accessible to AISOD Chat over the network, it needs to run in **StreamableHTTP** mode. Since the `fetch` example only supports `stdio` out of the box, we can use an adapter tool called [`supergateway`](https://github.com/supercorp-ai/supergateway) to convert the `stdio` transport to `StreamableHTTP` without rewriting the server code.
 
 Run the following commands in your terminal to set up and launch the server. Make sure `python` and `node.js` have been installed:
 
@@ -37,7 +37,7 @@ Now, the server is listening at `http://localhost:8000/mcp`.
 
 ### Step 2: Expose the Server via a Public URL
 
-Google AI Edge Gallery requires the local server to have a publicly routable URL to access it. If your host machine is already serving behind an HTTPS DNS address, you can skip this step.
+AISOD Chat requires the local server to have a publicly routable URL to access it. If your host machine is already serving behind an HTTPS DNS address, you can skip this step.
 
 Otherwise, you can expose the local port using a free tool like [Cloudflare Quick Tunnels](https://try.cloudflare.com/). First, install the `cloudflared` command-line tool on your machine, then run the following command in a separate terminal window:
 
@@ -74,7 +74,7 @@ The command will output a unique public HTTPS URL (e.g., `https://<random-string
 
 Unlike local development setups, cloud-hosted MCP servers are fully managed, run directly on external cloud infrastructure, and operate in **StreamableHTTP** mode by default. Because these services are exposed publicly, they require explicit authorization to control access.
 
-Google AI Edge Gallery supports remote server authentication by allowing you to inject custom keys and credentials directly into the HTTP request headers. (We are working on supporting the full OAuth flow)
+AISOD Chat supports remote server authentication by allowing you to inject custom keys and credentials directly into the HTTP request headers. (We are working on supporting the full OAuth flow)
 
 The following steps demonstrate how to connect the official **Maps Grounding Lite** cloud server ([https://mapstools.googleapis.com/mcp](https://mapstools.googleapis.com/mcp)) to the app. This service provides your on-device model with tools to query live geographical locations, weather conditions, and travel routes.
 
@@ -110,5 +110,5 @@ Before configuring the app, you need to set up a project and generate a valid cr
 While integrating MCP servers significantly expands the capabilities of on-device AI, users should keep the following constraints in mind during the experimental phase:
 
 * **Model Compatibility:** Due to the complexity and length of the injected system prompts required for tool use, **Gemma-4-E4B** currently offers the most stable and reliable tool-calling behavior. Smaller models may struggle to parse schemas accurately.
-* **Context Window Constraints:** Most official MCP servers are designed for desktop applications with massive context windows (e.g., 32k to 200k+ tokens). Google AI Edge Gallery models operate within a tighter context limit (**4k to 10k tokens**). Because large tool descriptions or JSON schemas can quickly consume the majority of your context window, it is highly recommended to **only enable the specific tools you need** for your task.
+* **Context Window Constraints:** Most official MCP servers are designed for desktop applications with massive context windows (e.g., 32k to 200k+ tokens). AISOD Chat models operate within a tighter context limit (**4k to 10k tokens**). Because large tool descriptions or JSON schemas can quickly consume the majority of your context window, it is highly recommended to **only enable the specific tools you need** for your task.
 * **GPU Acceleration and Numerical Accuracy:** The app utilizes GPU hardware acceleration to ensure low-latency performance. However, some mobile GPU kernels do not handle floating-point or high-precision math with the same consistency as a CPU. As a result, the model may occasionally output incorrect or slightly distorted numbers when executing math-heavy or coordinate-based tools.

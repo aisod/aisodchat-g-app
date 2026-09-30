@@ -1,1 +1,1 @@
-# Google AI Edge Gallery (Android)
+# AISOD Chat (Android)

@@ -79,4 +79,4 @@ cd gallery/Android/src/
 ./gradlew installDebug
 ```
 
-Gradle will take care of downloading dependencies, compiling the code, and deploying the APK. Once finished, you should see "Edge Gallery" appearing in your app drawer!
+Gradle will take care of downloading dependencies, compiling the code, and deploying the APK. Once finished, you should see "AISOD Chat" appearing in your app drawer!

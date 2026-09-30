@@ -55,7 +55,7 @@ data class SessionConfig(
 )
 
 /**
- * Orchestration manager for LLM sessions in AI Edge Gallery.
+ * Orchestration manager for LLM sessions in AISOD Chat.
  *
  * Coordinates session lifecycle, chat history persistence, LLM instance configuration, inference
  * execution, and feedback linkage across models and tasks.

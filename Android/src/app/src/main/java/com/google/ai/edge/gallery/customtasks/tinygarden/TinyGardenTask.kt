@@ -53,7 +53,7 @@ There are 4 kinds of seeds you can plant:
 1. sunflower
 2. daisy
 3. rose
-4. special (edge gallery, special, secret)
+4. special (aisod chat, special, secret)
 
 Plot Array: For each action, identify all individual plot numbers (1-9) or implied plots (e.g., 'top row' -> 1, 2, 3) and collect them into the `plots` list.
 
